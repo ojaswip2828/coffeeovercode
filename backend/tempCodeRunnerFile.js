@@ -1,11 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
-// Import only existing routes
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
 const taskRoutes = require("./routes/tasks");
+
+// ⬇️ NEW ROUTES
+const messageRoutes = require("./routes/messages");
+const notificationRoutes = require("./routes/notifications");
+const commentRoutes = require("./routes/comments");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,17 +27,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 
+// ⬇️ MOUNT NEW FEATURES
+app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/comments", commentRoutes);
+
 // Health check route
 app.get("/health", (req, res) => {
   res.json({ status: "✅ Synergy Backend Running", time: new Date() });
-});
-
-// Default route
-app.get("/", (req, res) => {
-  res.send("🚀 SynergySphere Backend is running with JWT protection!");
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
